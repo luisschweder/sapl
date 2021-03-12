@@ -1122,6 +1122,12 @@ class UnidadeTramitacao(models.Model):
         Parlamentar, blank=True, null=True,
         on_delete=models.PROTECT, verbose_name=_('Parlamentar'))
 
+    usuarios = models.ManyToManyField(
+        get_settings_auth_user_model(),
+        through='UnidadeTramitacaoUser',
+        through_fields=('unidade_tramitacao', 'usuario'),
+        symmetrical=False,)
+
     objects = UnidadeTramitacaoManager()
 
     class Meta:
@@ -1154,6 +1160,115 @@ class UnidadeTramitacao(models.Model):
             return _('%(orgao)s') % {'orgao': self.orgao}
         else:
             return _('%(parlamentar)s') % {'parlamentar': self.parlamentar}
+
+
+@reversion.register()
+class UnidadeTramitacaoUserM2M(models.Model):
+
+    unidade_tramitacao = models.ForeignKey(
+        UnidadeTramitacao,
+        related_name='unidadetramitacao_set',
+        on_delete=models.PROTECT,
+        verbose_name=_('Unidade de Tramitação'))
+
+    usuario = models.ForeignKey(
+        get_settings_auth_user_model(),
+        related_name='usuario_set',
+        verbose_name=_('Usuário'),
+        on_delete=models.PROTECT
+    )
+
+    destinos = models.ManyToManyField(UnidadeTramitacao)
+
+    data_entrada = models.DateTimeField(
+        verbose_name=_(
+            'Data e Hora de Entrada do Usuário na Unidade Administrativa'),
+    )
+    data_saida = models.DateTimeField(
+        verbose_name=_(
+            'Data e Hora de Saída do Usuário na Unidade Administrativa'),
+        blank=True, null=True
+    )
+
+    enviar_email = models.BooleanField(
+        verbose_name=_('Notificar por email os encaminhamentos?'),
+        choices=YES_NO_CHOICES,
+        default=False)
+
+    class Meta:
+        verbose_name = _('Vínculo entre Usuário e Unidade de Tramitação')
+        verbose_name_plural = _(
+            'Vínculo entre Usuário e Unidade de Tramitação')
+
+
+@reversion.register()
+class UnidadeTramitacaoUserFK(models.Model):
+
+    usuario = models.ForeignKey(
+        get_settings_auth_user_model(),
+        related_name='usuario_set',
+        verbose_name=_('Usuário'),
+        on_delete=models.PROTECT
+    )
+
+    origens = models.ManyToManyField(UnidadeTramitacao)
+
+    destinos = models.ManyToManyField(UnidadeTramitacao)
+
+    data_entrada = models.DateTimeField(
+        verbose_name=_(
+            'Data e Hora de Entrada do Usuário na Unidade Administrativa'),
+    )
+    data_saida = models.DateTimeField(
+        verbose_name=_(
+            'Data e Hora de Saída do Usuário na Unidade Administrativa'),
+        blank=True, null=True
+    )
+
+    enviar_email = models.BooleanField(
+        verbose_name=_('Notificar por email os encaminhamentos?'),
+        choices=YES_NO_CHOICES,
+        default=False)
+
+    class Meta:
+        verbose_name = _('Vínculo entre Usuário e Unidade de Tramitação')
+        verbose_name_plural = _(
+            'Vínculo entre Usuário e Unidade de Tramitação')
+
+
+@reversion.register()
+class UnidadeTramitacaoUserOneToOne(models.Model):
+
+    usuario = models.OneToOneField(
+        get_settings_auth_user_model(),
+        related_name='rota_tramitacao',
+        verbose_name=_('Usuário'),
+        on_delete=models.PROTECT
+    )
+
+    origens = models.ManyToManyField(UnidadeTramitacao)
+
+    destinos = models.ManyToManyField(UnidadeTramitacao)
+
+    data_entrada = models.DateTimeField(
+        verbose_name=_(
+            'Data e Hora de Entrada do Usuário na Unidade Administrativa'),
+    )
+    data_saida = models.DateTimeField(
+        verbose_name=_(
+            'Data e Hora de Saída do Usuário na Unidade Administrativa'),
+        blank=True, null=True
+    )
+
+    enviar_email = models.BooleanField(
+        verbose_name=_('Notificar por email os encaminhamentos?'),
+        choices=YES_NO_CHOICES,
+        default=False)
+
+    class Meta:
+        verbose_name = _('Vínculo entre Usuário e Unidade de Tramitação')
+        verbose_name_plural = _(
+            'Vínculo entre Usuário e Unidade de Tramitação')
 
 
 @reversion.register()
