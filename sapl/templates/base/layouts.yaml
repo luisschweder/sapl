@@ -17,6 +17,11 @@ UserDetail:
   - groups
   - user_permissions
 
+UTUser:
+  {% trans 'Fluxo de Tramitação' %}:
+  - enviar_email destino_livre
+  - origens destinos
+
 AppConfig:
 
   {% trans 'Configurações Gerais' %}:

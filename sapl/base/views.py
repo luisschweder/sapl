@@ -1,5 +1,5 @@
+
 from collections import OrderedDict
-import collections
 import datetime
 import itertools
 import logging
@@ -10,13 +10,15 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.contrib.auth.models import Group
 from django.contrib.auth.tokens import default_token_generator
-from django.contrib.auth.views import (PasswordResetView, PasswordResetConfirmView, PasswordResetCompleteView,
-                                       PasswordResetDoneView)
-from django.core.exceptions import ObjectDoesNotExist, PermissionDenied, ValidationError
+from django.contrib.auth.views import PasswordResetView,\
+    PasswordResetDoneView, PasswordResetConfirmView,\
+    PasswordResetCompleteView
+from django.core.exceptions import PermissionDenied, ObjectDoesNotExist,\
+    ValidationError
 from django.core.mail import send_mail
 from django.db import connection
-from django.db.models import Count, Q, Max, F
-from django.forms.utils import ErrorList
+from django.db.models import Q, F
+from django.db.models.aggregates import Count, Max
 from django.http import Http404, HttpResponseRedirect, JsonResponse
 from django.shortcuts import redirect
 from django.template import TemplateDoesNotExist
@@ -34,16 +36,15 @@ from haystack.views import SearchView
 
 from sapl import settings
 from sapl.audiencia.models import AudienciaPublica, TipoAudienciaPublica
-from sapl.base.forms import (AutorForm, TipoAutorForm, AutorFilterSet, RecuperarSenhaForm,
-                             NovaSenhaForm, UserAdminForm,
-                             OperadorAutorForm)
-from sapl.base.models import Autor, TipoAutor, OperadorAutor
+from sapl.base.forms import RecuperarSenhaForm, NovaSenhaForm,\
+    TipoAutorForm, AutorForm, UserAdminForm, UTUserForm
+from sapl.base.models import Autor, TipoAutor
 from sapl.comissoes.models import Comissao, Reuniao
 from sapl.crud.base import CrudAux, make_pagination, Crud,\
     ListWithSearchForm, MasterDetailCrud
 from sapl.materia.models import (Anexada, Autoria, DocumentoAcessorio, MateriaEmTramitacao, MateriaLegislativa,
                                  Proposicao, StatusTramitacao, TipoDocumento, TipoMateriaLegislativa, UnidadeTramitacao,
-                                 MateriaAssunto)
+                                 MateriaAssunto, UTUser)
 from sapl.norma.models import NormaJuridica, TipoNormaJuridica
 from sapl.parlamentares.models import (
     Filiacao, Legislatura, Mandato, Parlamentar, SessaoLegislativa)
@@ -62,7 +63,7 @@ from sapl.settings import EMAIL_SEND_USER
 from sapl.utils import (gerar_hash_arquivo, intervalos_tem_intersecao, mail_service_configured, parlamentares_ativos,
                         SEPARADOR_HASH_PROPOSICAO, show_results_filter_set, num_materias_por_tipo,
                         google_recaptcha_configured, sapl_as_sapn,
-                        groups_remove_user, groups_add_user)
+                        from_date_to_datetime_utc)
 
 from .forms import (AlterarSenhaForm, CasaLegislativaForm, ConfiguracoesAppForm, RelatorioAtasFilterSet,
                     RelatorioAudienciaFilterSet, RelatorioDataFimPrazoTramitacaoFilterSet,
@@ -1082,7 +1083,7 @@ class RelatorioNormasPublicadasMesView(RelatorioMixin, FilterView):
         context['show_results'] = show_results_filter_set(qr)
         context['ano'] = self.request.GET['ano']
 
-        normas_mes = collections.OrderedDict()
+        normas_mes = OrderedDict()
         meses = {1: 'Janeiro', 2: 'Fevereiro', 3: 'Março', 4: 'Abril', 5: 'Maio', 6: 'Junho',
                  7: 'Julho', 8: 'Agosto', 9: 'Setembro', 10: 'Outubro', 11: 'Novembro', 12: 'Dezembro'}
         for norma in context['object_list']:
@@ -1192,7 +1193,7 @@ class EstatisticasAcessoNormas(TemplateView):
         cursor.execute(query)
         rows = cursor.fetchall()
 
-        normas_mes = collections.OrderedDict()
+        normas_mes = OrderedDict()
         meses = {1: 'Janeiro', 2: 'Fevereiro', 3: 'Março', 4: 'Abril', 5: 'Maio', 6: 'Junho',
                  7: 'Julho', 8: 'Agosto', 9: 'Setembro', 10: 'Outubro', 11: 'Novembro', 12: 'Dezembro'}
 
@@ -1921,6 +1922,8 @@ class UserCrud(Crud):
 
         def get_context_data(self, **kwargs):
             context = Crud.DetailView.get_context_data(self, **kwargs)
+            context['subnav_template_name'] = 'base/subnav_user.yaml'
+
             context['title'] = '{} <i>({})</i><br><small>{}</small>'.format(
                 self.object.get_full_name() or '...',
                 self.object.username,
@@ -1979,6 +1982,35 @@ class UserCrud(Crud):
                 qs = qs.filter(q)
 
             return qs.distinct('id').order_by('-id')
+
+
+class UTUserCrud(MasterDetailCrud):
+    model = UTUser
+    parent_field = 'user'
+    help_topic = 'unidadetramitacao_user'
+
+    class CreateView(MasterDetailCrud.CreateView):
+        form_class = UTUserForm
+
+    class UpdateView(MasterDetailCrud.UpdateView):
+        form_class = UTUserForm
+
+    class BaseMixin(MasterDetailCrud.BaseMixin):
+
+        def get_layout(self):
+            return super().get_layout(
+                'base/layouts.yaml'
+            )
+
+        def resolve_url(self, suffix, args=None):
+            return reverse('sapl.base:%s' % self.url_name(suffix),
+                           args=args)
+
+        def get_context_data(self, **kwargs):
+            context = MasterDetailCrud.BaseMixin.get_context_data(
+                self, **kwargs)
+            context['subnav_template_name'] = 'base/subnav_user.yaml'
+            return context
 
 
 class CasaLegislativaCrud(CrudAux):

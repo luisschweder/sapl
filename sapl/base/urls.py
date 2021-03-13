@@ -9,7 +9,7 @@ from django.views.generic.base import RedirectView, TemplateView
 from sapl.base.views import (AutorCrud, ConfirmarEmailView, TipoAutorCrud, get_estatistica,
                              RecuperarSenhaEmailView, RecuperarSenhaFinalizadoView,
                              RecuperarSenhaConfirmaView, RecuperarSenhaCompletoView, RelatorioMateriaAnoAssuntoView,
-                             IndexView, UserCrud)
+                             IndexView, UserCrud, UTUserCrud)
 from sapl.settings import MEDIA_URL, LOGOUT_REDIRECT_URL
 
 from .apps import AppConfig
@@ -32,8 +32,10 @@ from .views import (AlterarSenha, AppConfigCrud, CasaLegislativaCrud,
 app_name = AppConfig.name
 
 admin_user = [
-    url(r'^sistema/usuario/', include(UserCrud.get_urls())),
-
+    url(r'^sistema/usuario/', include(UserCrud.get_urls() +
+                                      UTUserCrud.get_urls()
+                                      )
+        ),
 ]
 
 alterar_senha = [

@@ -25,7 +25,7 @@ from sapl.crispy_layout_mixin import (form_actions, to_column, to_row,
                                       SaplFormHelper, SaplFormLayout)
 from sapl.materia.models import (DocumentoAcessorio, MateriaEmTramitacao,
                                  MateriaLegislativa, UnidadeTramitacao,
-                                 StatusTramitacao)
+                                 StatusTramitacao, UTUser)
 from sapl.norma.models import NormaJuridica
 from sapl.parlamentares.models import Partido, SessaoLegislativa,\
     Parlamentar, Votante
@@ -326,6 +326,24 @@ class UserAdminForm(ModelForm):
                 )"""
 
         return data
+
+
+class UTUserForm(ModelForm):
+
+    class Meta:
+        model = UTUser
+        fields = [
+            'enviar_email',
+            'destino_livre',
+            'origens',
+            'destinos'
+        ]
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        self.fields['origens'].widget = forms.CheckboxSelectMultiple()
+        self.fields['destinos'].widget = forms.CheckboxSelectMultiple()
 
 
 class SessaoLegislativaForm(FileFieldCheckMixin, ModelForm):
