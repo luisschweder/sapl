@@ -1,6 +1,7 @@
 import logging
 import os.path
 
+from celery_haystack.indexes import CelerySearchIndex
 from django.db.models import F, Q, Value
 from django.db.models.fields import TextField
 from django.db.models.functions import Concat
@@ -8,7 +9,6 @@ from django.template import loader
 from haystack import connections
 from haystack.constants import Indexable
 from haystack.fields import CharField
-from haystack.indexes import SearchIndex
 from haystack.utils import get_model_ct_tuple
 
 from sapl.compilacao.models import (STATUS_TA_IMMUTABLE_PUBLIC,
@@ -17,7 +17,6 @@ from sapl.materia.models import DocumentoAcessorio, MateriaLegislativa
 from sapl.norma.models import NormaJuridica
 from sapl.sessao.models import SessaoPlenaria
 from sapl.settings import SOLR_URL
-from sapl.utils import RemoveTag
 
 
 class TextExtractField(CharField):
@@ -33,6 +32,7 @@ class TextExtractField(CharField):
             self.model_attr = (self.model_attr, )
 
     def solr_extraction(self, arquivo):
+        print('entrou aqui')
         if not self.backend:
             self.backend = connections['default'].get_backend()
         try:
@@ -118,7 +118,7 @@ class TextExtractField(CharField):
                          'extracted': self.extract_data(obj)})
 
 
-class DocumentoAcessorioIndex(SearchIndex, Indexable):
+class DocumentoAcessorioIndex(CelerySearchIndex, Indexable):
     model = DocumentoAcessorio
     text = TextExtractField(
         document=True, use_template=True,

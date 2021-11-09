@@ -91,7 +91,10 @@ INSTALLED_APPS = (
     'reversion',
     'reversion_compare',
 
+    'django_celery_results',
     'haystack',
+    'celery_haystack',
+
     'speedinfo',
 
     'webpack_loader',
@@ -111,7 +114,8 @@ SOLR_URL = config('SOLR_URL', cast=str, default='http://localhost:8983')
 SOLR_COLLECTION = config('SOLR_COLLECTION', cast=str, default='sapl')
 
 if USE_SOLR:
-    HAYSTACK_SIGNAL_PROCESSOR = 'haystack.signals.RealtimeSignalProcessor'  # enable auto-index
+    #HAYSTACK_SIGNAL_PROCESSOR = 'haystack.signals.RealtimeSignalProcessor'
+    HAYSTACK_SIGNAL_PROCESSOR = 'celery_haystack.signals.CelerySignalProcessor'
     SEARCH_BACKEND = 'haystack.backends.solr_backend.SolrEngine'
     SEARCH_URL = ('URL', '{}/solr/{}'.format(SOLR_URL, SOLR_COLLECTION))
 
@@ -124,6 +128,29 @@ HAYSTACK_CONNECTIONS = {
         'TIMEOUT': 20,
     },
 }
+
+
+USE_CHANNEL_LAYERS = config(
+    'USE_CHANNEL_LAYERS', cast=bool, default=True)
+HOST_CHANNEL_LAYERS = config(
+    'HOST_CHANNEL_LAYERS', cast=str, default='localhost')
+PORT_CHANNEL_LAYERS = config(
+    'PORT_CHANNEL_LAYERS', cast=int, default=6379)
+
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            "hosts": [(HOST_CHANNEL_LAYERS, PORT_CHANNEL_LAYERS)],
+        },
+    },
+}
+
+CELERY_BROKER_URL = 'redis://localhost:6379'
+
+CELERY_RESULT_BACKEND = 'django-db'
+CELERY_CACHE_BACKEND = 'django-cache'
+
 
 MIDDLEWARE = [
     'reversion.middleware.RevisionMiddleware',
@@ -291,6 +318,7 @@ if DEBUG and not WEBPACK_LOADER['DEFAULT']['STATS_FILE'].exists():
     WEBPACK_LOADER['DEFAULT']['STATS_FILE'] = PROJECT_DIR.child(
         'frontend').child(f'webpack-stats.json')
 
+
 STATIC_URL = '/static/'
 STATIC_ROOT = PROJECT_DIR.child("collected_static")
 
@@ -320,7 +348,8 @@ FORM_RENDERER = 'django.forms.renderers.DjangoTemplates'
 # suprime texto de ajuda default do django-filter
 FILTERS_HELP_TEXT_FILTER = False
 
-LOGGING_CONSOLE_VERBOSE = config('LOGGING_CONSOLE_VERBOSE', cast=bool, default=False)
+LOGGING_CONSOLE_VERBOSE = config(
+    'LOGGING_CONSOLE_VERBOSE', cast=bool, default=False)
 
 LOGGING = {
     'version': 1,
