@@ -972,7 +972,9 @@ class Crud:
             if not cls.__abstract__:
                 return view
 
-            pr = set()
+            pr = set(view.permission_required) if hasattr(
+                view, 'permission_required') else set()
+
             if hasattr(view, 'permission_required') and \
                     view.permission_required and \
                     hasattr(cls, 'public') and \
@@ -981,7 +983,7 @@ class Crud:
                 #print(view.permission_required, view)
                 #print(cls.public, cls)
 
-                pr = set(view.permission_required) - set(cls.public)
+                pr = pr - set(cls.public)
 
             class CrudViewWithBase(cls.BaseMixin, view):
                 permission_required = tuple(pr)
