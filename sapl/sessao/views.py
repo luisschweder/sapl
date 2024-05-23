@@ -147,7 +147,8 @@ def verifica_votacoes_abertas(request):
 
         for sessao in votacoes_abertas:
             ordens = sessao.ordemdia_set.filter(votacao_aberta=True)
-            expediente = sessao.expedientemateria_set.filter(votacao_aberta=True)
+            expediente = sessao.expedientemateria_set.filter(
+                votacao_aberta=True)
             for o in ordens:
                 o.votacao_aberta = False
                 o.save()
@@ -167,7 +168,7 @@ def verifica_sessao_iniciada(request, spk, is_leitura=False):
         aux_text = 'leitura' if is_leitura else 'votação'
         logger.info('user=' + username + '. Não é possível abrir matérias para {}. '
                                          'Esta SessaoPlenaria (id={}) não foi iniciada ou está finalizada.'.format(
-            aux_text, spk))
+                                             aux_text, spk))
         msg = _('Não é possível abrir matérias para {}. '
                 'Esta Sessão Plenária não foi iniciada ou está finalizada.'
                 ' Vá em "Abertura"->"Dados Básicos" e altere os valores dos campos necessários.'.format(aux_text))
@@ -481,11 +482,11 @@ def customize_link_materia(context, pk, has_permission, is_expediente):
                                           'mid': obj.materia_id})
 
                 resultado = (
-                        '<a href="%s?page=%s">%s<br/><br/>%s</a>' % (
-                    url,
-                    context.get('page', 1),
-                    resultado_descricao,
-                    resultado_observacao))
+                    '<a href="%s?page=%s">%s<br/><br/>%s</a>' % (
+                        url,
+                        context.get('page', 1),
+                        resultado_descricao,
+                        resultado_observacao))
             else:
 
                 if obj.tipo_votacao == NOMINAL:
@@ -496,7 +497,7 @@ def customize_link_materia(context, pk, has_permission, is_expediente):
                                 'pk': obj.sessao_plenaria_id,
                                 'oid': obj.pk,
                                 'mid': obj.materia_id}) + \
-                              '?&materia=expediente'
+                            '?&materia=expediente'
                     else:
                         url = reverse(
                             'sapl.sessao:votacao_nominal_transparencia',
@@ -504,7 +505,7 @@ def customize_link_materia(context, pk, has_permission, is_expediente):
                                 'pk': obj.sessao_plenaria_id,
                                 'oid': obj.pk,
                                 'mid': obj.materia_id}) + \
-                              '?&materia=ordem'
+                            '?&materia=ordem'
 
                     resultado = ('<a href="%s">%s<br/>%s</a>' %
                                  (url,
@@ -519,7 +520,7 @@ def customize_link_materia(context, pk, has_permission, is_expediente):
                                 'pk': obj.sessao_plenaria_id,
                                 'oid': obj.pk,
                                 'mid': obj.materia_id}) + \
-                              '?&materia=expediente'
+                            '?&materia=expediente'
                     else:
                         url = reverse(
                             'sapl.sessao:votacao_simbolica_transparencia',
@@ -527,7 +528,7 @@ def customize_link_materia(context, pk, has_permission, is_expediente):
                                 'pk': obj.sessao_plenaria_id,
                                 'oid': obj.pk,
                                 'mid': obj.materia_id}) + \
-                              '?&materia=ordem'
+                            '?&materia=ordem'
 
                     resultado = ('<a href="%s">%s<br/>%s</a>' %
                                  (url,
@@ -791,7 +792,7 @@ class MateriaOrdemDiaCrud(MasterDetailCrud):
                 sessao_plenaria=self.kwargs['pk']).aggregate(
                 Max('numero_ordem'))['numero_ordem__max']
             self.initial['numero_ordem'] = (
-                                               max_numero_ordem if max_numero_ordem else 0) + 1
+                max_numero_ordem if max_numero_ordem else 0) + 1
             return self.initial
 
         def get_success_url(self):
@@ -934,7 +935,7 @@ class ExpedienteMateriaCrud(MasterDetailCrud):
                 sessao_plenaria=self.kwargs['pk']).aggregate(
                 Max('numero_ordem'))['numero_ordem__max']
             initial['numero_ordem'] = (
-                                          max_numero_ordem if max_numero_ordem else 0) + 1
+                max_numero_ordem if max_numero_ordem else 0) + 1
             return initial
 
         def get_success_url(self):
@@ -1414,7 +1415,7 @@ class PresencaView(FormMixin, PresencaMixin, DetailView):
 
             # Id dos parlamentares presentes
             marcados = request.POST.getlist('presenca_ativos') \
-                       + request.POST.getlist('presenca_inativos')
+                + request.POST.getlist('presenca_inativos')
 
             # Deletar os que foram desmarcados
             deletar = set(presentes_banco) - set(marcados)
@@ -1529,7 +1530,7 @@ class PresencaOrdemDiaView(FormMixin, PresencaMixin, DetailView):
 
             # Id dos parlamentares presentes
             marcados = request.POST.getlist('presenca_ativos') \
-                       + request.POST.getlist('presenca_inativos')
+                + request.POST.getlist('presenca_inativos')
 
             # Deletar os que foram desmarcados
             deletar = set(presentes_banco) - set(marcados)
@@ -1791,7 +1792,7 @@ def insere_parlamentar_composicao(request):
     username = request.user.username
     if request.user.has_perm(
             '%s.add_%s' % (
-                    AppConfig.label, IntegranteMesa._meta.model_name)):
+                AppConfig.label, IntegranteMesa._meta.model_name)):
 
         composicao = IntegranteMesa()
 
@@ -1825,7 +1826,8 @@ def insere_parlamentar_composicao(request):
 
             if parlamentar_ja_inserido:
                 logger.debug(
-                    "user=" + username + ". Parlamentar (id={}) já inserido na sessao_plenaria(id={}) e cargo(ìd={})."
+                    "user=" + username +
+                    ". Parlamentar (id={}) já inserido na sessao_plenaria(id={}) e cargo(ìd={})."
                     .format(request.POST['parlamentar'], composicao.sessao_plenaria.id, composicao.cargo.id))
                 return JsonResponse({'msg': ('Parlamentar já inserido!', 0)})
 
@@ -1854,7 +1856,7 @@ def remove_parlamentar_composicao(request):
     username = request.user.username
     if request.POST and request.user.has_perm(
             '%s.delete_%s' % (
-                    AppConfig.label, IntegranteMesa._meta.model_name)):
+                AppConfig.label, IntegranteMesa._meta.model_name)):
 
         if 'composicao_mesa' in request.POST:
             try:
@@ -2534,7 +2536,8 @@ class ExpedienteView(FormMixin, DetailView):
                 msg = _('Registro salvo com sucesso')
                 messages.add_message(self.request, messages.SUCCESS, msg)
                 self.logger.info(
-                    'user=' + username + '. ExpedienteSessao(sessao_plenaria_id={} e tipo_id={}) salvo com sucesso.'
+                    'user=' + username +
+                    '. ExpedienteSessao(sessao_plenaria_id={} e tipo_id={}) salvo com sucesso.'
                     .format(self.object.id, tipo))
 
             return self.form_valid(form)
@@ -2907,7 +2910,7 @@ class VotacaoView(SessaoPermissionMixin):
                     username = request.user.username
                     self.logger.error('user=' + username + '. Problemas ao salvar RegistroVotacao da materia de id={} '
                                                            'e da ordem de id={}. '.format(materia_id, ordem_id) + str(
-                        e))
+                                                               e))
                     return self.form_invalid(form)
                 else:
                     ordem = OrdemDia.objects.get(id=ordem_id)
@@ -4456,8 +4459,11 @@ class LeituraEmBloco(PermissionRequiredForAppCrudMixin, ListView):
                 leituras.append(obj)
 
             RegistroLeitura.objects.bulk_create(leituras)
+            models.update(resultado='Matéria Lida')
+
         else:
-            messages.add_message(self.request, messages.ERROR, _('Nenhuma matéria selecionada para leitura em Bloco'))
+            messages.add_message(self.request, messages.ERROR, _(
+                'Nenhuma matéria selecionada para leitura em Bloco'))
             return self.get(request, self.kwargs)
 
         return HttpResponseRedirect(self.get_success_url())
@@ -5263,7 +5269,7 @@ class CorrespondenciaCrud(MasterDetailCrud):
                 sessao_plenaria=self.kwargs['pk']).aggregate(
                 Max('numero_ordem'))['numero_ordem__max']
             initial['numero_ordem'] = (
-                                          max_numero_ordem if max_numero_ordem else 0) + 1
+                max_numero_ordem if max_numero_ordem else 0) + 1
 
             return initial
 
