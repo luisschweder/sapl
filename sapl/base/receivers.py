@@ -315,8 +315,8 @@ def signed_files_extraction_function(sender, instance, **kwargs):
 
                 br = [int(i, 10) for i in pdfdata[start + 1: stop].split()]
 
-                # if br in fields_br:
-                #    continue
+                if br in fields_br:
+                    continue
 
                 contents = pdfdata[br[0] + br[1] + 1: br[2] - 1]
                 bcontents = bytes.fromhex(contents.decode("utf8"))
