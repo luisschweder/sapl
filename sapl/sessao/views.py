@@ -45,7 +45,8 @@ from sapl.sessao.forms import ExpedienteMateriaForm, OrdemDiaForm, OrdemExpedien
     CorrespondenciaForm, CorrespondenciaEmLoteFilterSet
 from sapl.sessao.models import Correspondencia
 from sapl.settings import TIME_ZONE
-from sapl.utils import show_results_filter_set, remover_acentos, get_client_ip
+from sapl.utils import show_results_filter_set, remover_acentos, get_client_ip,\
+    MultiFormatOutputMixin
 
 from .forms import (AdicionarVariasMateriasFilterSet, BancadaForm,
                     ExpedienteForm, JustificativaAusenciaForm, OcorrenciaSessaoForm, ListMateriaForm,
@@ -3969,12 +3970,25 @@ class PautaSessaoDetailView(DetailView):
             return self.render_to_response(context)
 
 
-class PesquisarSessaoPlenariaView(FilterView):
+class PesquisarSessaoPlenariaView(MultiFormatOutputMixin, FilterView):
     model = SessaoPlenaria
     filterset_class = SessaoPlenariaFilterSet
     paginate_by = 10
 
     logger = logging.getLogger(__name__)
+
+    viewname = 'sapl.sessao:pesquisar_sessao'
+
+    queryset_values_for_formats = False
+
+    fields_base_report = [
+        'id', 'data_inicio', 'hora_inicio', 'data_fim', 'hora_fim', '',
+    ]
+    fields_report = {
+        'csv': fields_base_report,
+        'xlsx': fields_base_report,
+        'json': fields_base_report,
+    }
 
     def get_filterset_kwargs(self, filterset_class):
         super().get_filterset_kwargs(filterset_class)
@@ -3992,47 +4006,60 @@ class PesquisarSessaoPlenariaView(FilterView):
         })
         return kwargs
 
+    def hook_header_(self):
+        return force_text(_('Título'))
+
+    def hook_(self, obj):
+        return str(obj)
+
+    def hook_data_inicio(self, obj):
+        return str(obj.data_inicio or '')
+
+    def hook_data_fim(self, obj):
+        return str(obj.data_fim or '')
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
         context['title'] = _('Pesquisar Sessão Plenária')
+
         paginator = context['paginator']
         page_obj = context['page_obj']
 
         context['page_range'] = make_pagination(
             page_obj.number, paginator.num_pages)
 
-        return context
+        context['show_results'] = show_results_filter_set(
+            self.request.GET.copy())
 
-    def get(self, request, *args, **kwargs):
-        super().get(request)
-
-        # Se a pesquisa estiver quebrando com a paginação
-        # Olhe esta função abaixo
-        # Provavelmente você criou um novo campo no Form/FilterSet
-        # Então a ordem da URL está diferente
         data = self.filterset.data
         if data and data.get('data_inicio__year') is not None:
             url = "&" + str(self.request.META['QUERY_STRING'])
             if url.startswith("&page"):
                 ponto_comeco = url.find('data_inicio__year=') - 1
                 url = url[ponto_comeco:]
-        else:
-            url = ''
+            context['filter_url'] = url
 
-        context = self.get_context_data(filter=self.filterset,
-                                        object_list=self.object_list,
-                                        filter_url=url,
-                                        numero_res=len(self.object_list)
-                                        )
+        context['numero_res'] = len(self.object_list)
 
-        context['show_results'] = show_results_filter_set(
-            self.request.GET.copy())
+        return context
+
+    def get(self, request, *args, **kwargs):
+
+        r = super().get(request)
+
+        data = self.filterset.data
+        if not data:
+            return HttpResponseRedirect(
+                reverse(
+                    self.viewname
+                ) + f'?data_inicio__year={timezone.now().year}'
+            )
 
         username = request.user.username
         self.logger.debug('user=' + username + '. Pesquisa de SessaoPlenaria.')
 
-        return self.render_to_response(context)
+        return r
 
 
 class PesquisarPautaSessaoView(PesquisarSessaoPlenariaView):
