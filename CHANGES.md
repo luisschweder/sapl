@@ -1,4 +1,28 @@
 
+3.1.163-RC21 / 2024-06-25
+=========================
+
+  * fix: descomenta código pertencente ao commit anterior
+  * fix: elimina dupla extração de assinaturas eletrônicas
+  * fix: remove listagem pública de OperadorAutor
+  * fix: altera campo de 'resultado' ao registrar leitura em bloco
+  * bump version gunicorn in setup.py
+  * rebuild frontend
+  * fix dependabot alerts #61 - bump version axios
+  * fix: ajuste no conjunto inicial de permissões na construção de classe crud
+  * Impl Mixin para gerar arquivos de pesq em diversos formatos (#3710)
+  * Fix estatistica norma view (#3707)
+  * bump version gunicorn, pillow
+  * Build(deps): Bump pillow from 10.0.1 to 10.3.0 in /requirements (#3709)
+  * fix: corrige display de data e hora de protocolor manual
+  * fix: corrige carga de permissões públicas do crud
+  * Add blank space when SAPN
+  * fix: corrige bug na pesquisa de impressos etiquetas (#3695)
+  * feat: adiciona o turno na info de materias na pauta de sessao (#3694)
+  * fix: invert lógica do sapln_switch
+  * fix: Update docker-compose.yaml
+  * Update CHANGES.md
+
 3.1.163-RC20 / 2023-12-04
 =========================
 
