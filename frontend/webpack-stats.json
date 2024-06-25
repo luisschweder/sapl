@@ -6,15 +6,15 @@
       "path": "/home/leandro/desenvolvimento/envs/sapl/sapl/static/sapl/frontend/audio/ring.mp3",
       "publicPath": "/static/sapl/frontend/audio/ring.mp3"
     },
-    "css/chunk-vendors.ca5d6518.css": {
-      "name": "css/chunk-vendors.ca5d6518.css",
-      "path": "/home/leandro/desenvolvimento/envs/sapl/sapl/static/sapl/frontend/css/chunk-vendors.ca5d6518.css",
-      "publicPath": "/static/sapl/frontend/css/chunk-vendors.ca5d6518.css"
+    "css/chunk-vendors.045ec640.css": {
+      "name": "css/chunk-vendors.045ec640.css",
+      "path": "/home/leandro/desenvolvimento/envs/sapl/sapl/static/sapl/frontend/css/chunk-vendors.045ec640.css",
+      "publicPath": "/static/sapl/frontend/css/chunk-vendors.045ec640.css"
     },
-    "css/chunk-vendors.ca5d6518.css.gz": {
-      "name": "css/chunk-vendors.ca5d6518.css.gz",
-      "path": "/home/leandro/desenvolvimento/envs/sapl/sapl/static/sapl/frontend/css/chunk-vendors.ca5d6518.css.gz",
-      "publicPath": "/static/sapl/frontend/css/chunk-vendors.ca5d6518.css.gz"
+    "css/chunk-vendors.045ec640.css.gz": {
+      "name": "css/chunk-vendors.045ec640.css.gz",
+      "path": "/home/leandro/desenvolvimento/envs/sapl/sapl/static/sapl/frontend/css/chunk-vendors.045ec640.css.gz",
+      "publicPath": "/static/sapl/frontend/css/chunk-vendors.045ec640.css.gz"
     },
     "css/compilacao.0baf3580.css": {
       "name": "css/compilacao.0baf3580.css",
@@ -271,25 +271,25 @@
       "path": "/home/leandro/desenvolvimento/envs/sapl/sapl/static/sapl/frontend/img/user.png",
       "publicPath": "/static/sapl/frontend/img/user.png"
     },
-    "js/chunk-vendors.75ccdae9.js": {
-      "name": "js/chunk-vendors.75ccdae9.js",
-      "path": "/home/leandro/desenvolvimento/envs/sapl/sapl/static/sapl/frontend/js/chunk-vendors.75ccdae9.js",
-      "publicPath": "/static/sapl/frontend/js/chunk-vendors.75ccdae9.js"
+    "js/chunk-vendors.e8ab4373.js": {
+      "name": "js/chunk-vendors.e8ab4373.js",
+      "path": "/home/leandro/desenvolvimento/envs/sapl/sapl/static/sapl/frontend/js/chunk-vendors.e8ab4373.js",
+      "publicPath": "/static/sapl/frontend/js/chunk-vendors.e8ab4373.js"
     },
-    "js/chunk-vendors.75ccdae9.js.gz": {
-      "name": "js/chunk-vendors.75ccdae9.js.gz",
-      "path": "/home/leandro/desenvolvimento/envs/sapl/sapl/static/sapl/frontend/js/chunk-vendors.75ccdae9.js.gz",
-      "publicPath": "/static/sapl/frontend/js/chunk-vendors.75ccdae9.js.gz"
+    "js/chunk-vendors.e8ab4373.js.gz": {
+      "name": "js/chunk-vendors.e8ab4373.js.gz",
+      "path": "/home/leandro/desenvolvimento/envs/sapl/sapl/static/sapl/frontend/js/chunk-vendors.e8ab4373.js.gz",
+      "publicPath": "/static/sapl/frontend/js/chunk-vendors.e8ab4373.js.gz"
     },
-    "js/chunk-vendors.75ccdae9.js.LICENSE.txt": {
-      "name": "js/chunk-vendors.75ccdae9.js.LICENSE.txt",
-      "path": "/home/leandro/desenvolvimento/envs/sapl/sapl/static/sapl/frontend/js/chunk-vendors.75ccdae9.js.LICENSE.txt",
-      "publicPath": "/static/sapl/frontend/js/chunk-vendors.75ccdae9.js.LICENSE.txt"
+    "js/chunk-vendors.e8ab4373.js.LICENSE.txt": {
+      "name": "js/chunk-vendors.e8ab4373.js.LICENSE.txt",
+      "path": "/home/leandro/desenvolvimento/envs/sapl/sapl/static/sapl/frontend/js/chunk-vendors.e8ab4373.js.LICENSE.txt",
+      "publicPath": "/static/sapl/frontend/js/chunk-vendors.e8ab4373.js.LICENSE.txt"
     },
-    "js/chunk-vendors.75ccdae9.js.LICENSE.txt.gz": {
-      "name": "js/chunk-vendors.75ccdae9.js.LICENSE.txt.gz",
-      "path": "/home/leandro/desenvolvimento/envs/sapl/sapl/static/sapl/frontend/js/chunk-vendors.75ccdae9.js.LICENSE.txt.gz",
-      "publicPath": "/static/sapl/frontend/js/chunk-vendors.75ccdae9.js.LICENSE.txt.gz"
+    "js/chunk-vendors.e8ab4373.js.LICENSE.txt.gz": {
+      "name": "js/chunk-vendors.e8ab4373.js.LICENSE.txt.gz",
+      "path": "/home/leandro/desenvolvimento/envs/sapl/sapl/static/sapl/frontend/js/chunk-vendors.e8ab4373.js.LICENSE.txt.gz",
+      "publicPath": "/static/sapl/frontend/js/chunk-vendors.e8ab4373.js.LICENSE.txt.gz"
     },
     "js/compilacao.af24f12d.js": {
       "name": "js/compilacao.af24f12d.js",
@@ -301,20 +301,20 @@
       "path": "/home/leandro/desenvolvimento/envs/sapl/sapl/static/sapl/frontend/js/compilacao.af24f12d.js.gz",
       "publicPath": "/static/sapl/frontend/js/compilacao.af24f12d.js.gz"
     },
-    "js/global.745f55c0.js": {
-      "name": "js/global.745f55c0.js",
-      "path": "/home/leandro/desenvolvimento/envs/sapl/sapl/static/sapl/frontend/js/global.745f55c0.js",
-      "publicPath": "/static/sapl/frontend/js/global.745f55c0.js"
+    "js/global.656a0d36.js": {
+      "name": "js/global.656a0d36.js",
+      "path": "/home/leandro/desenvolvimento/envs/sapl/sapl/static/sapl/frontend/js/global.656a0d36.js",
+      "publicPath": "/static/sapl/frontend/js/global.656a0d36.js"
     },
-    "js/global.745f55c0.js.gz": {
-      "name": "js/global.745f55c0.js.gz",
-      "path": "/home/leandro/desenvolvimento/envs/sapl/sapl/static/sapl/frontend/js/global.745f55c0.js.gz",
-      "publicPath": "/static/sapl/frontend/js/global.745f55c0.js.gz"
+    "js/global.656a0d36.js.gz": {
+      "name": "js/global.656a0d36.js.gz",
+      "path": "/home/leandro/desenvolvimento/envs/sapl/sapl/static/sapl/frontend/js/global.656a0d36.js.gz",
+      "publicPath": "/static/sapl/frontend/js/global.656a0d36.js.gz"
     },
-    "js/global.745f55c0.js.LICENSE.txt": {
-      "name": "js/global.745f55c0.js.LICENSE.txt",
-      "path": "/home/leandro/desenvolvimento/envs/sapl/sapl/static/sapl/frontend/js/global.745f55c0.js.LICENSE.txt",
-      "publicPath": "/static/sapl/frontend/js/global.745f55c0.js.LICENSE.txt"
+    "js/global.656a0d36.js.LICENSE.txt": {
+      "name": "js/global.656a0d36.js.LICENSE.txt",
+      "path": "/home/leandro/desenvolvimento/envs/sapl/sapl/static/sapl/frontend/js/global.656a0d36.js.LICENSE.txt",
+      "publicPath": "/static/sapl/frontend/js/global.656a0d36.js.LICENSE.txt"
     },
     "js/painel.4b2b2752.js": {
       "name": "js/painel.4b2b2752.js",
@@ -999,26 +999,26 @@
   },
   "chunks": {
     "compilacao": [
-      "css/chunk-vendors.ca5d6518.css",
-      "js/chunk-vendors.75ccdae9.js",
+      "css/chunk-vendors.045ec640.css",
+      "js/chunk-vendors.e8ab4373.js",
       "css/compilacao.0baf3580.css",
       "js/compilacao.af24f12d.js"
     ],
     "global": [
-      "css/chunk-vendors.ca5d6518.css",
-      "js/chunk-vendors.75ccdae9.js",
+      "css/chunk-vendors.045ec640.css",
+      "js/chunk-vendors.e8ab4373.js",
       "css/global.45591136.css",
-      "js/global.745f55c0.js"
+      "js/global.656a0d36.js"
     ],
     "painel": [
-      "css/chunk-vendors.ca5d6518.css",
-      "js/chunk-vendors.75ccdae9.js",
+      "css/chunk-vendors.045ec640.css",
+      "js/chunk-vendors.e8ab4373.js",
       "css/painel.e2b9504e.css",
       "js/painel.4b2b2752.js"
     ],
     "parlamentar": [
-      "css/chunk-vendors.ca5d6518.css",
-      "js/chunk-vendors.75ccdae9.js",
+      "css/chunk-vendors.045ec640.css",
+      "js/chunk-vendors.e8ab4373.js",
       "css/parlamentar.cd5dc5a8.css",
       "js/parlamentar.9e5854a6.js"
     ]
